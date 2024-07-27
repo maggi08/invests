@@ -3,11 +3,10 @@ import { ref, computed } from 'vue';
 import { formatPrice } from './utils/price';
 let salary = ref(1000000);
 let years = ref(10);
-let percent = ref(50);
+let percent = ref(20);
 let investPercent = ref(25);
 let startYear = ref(2024);
 let currency = ref('₸');
-let tgToDollar = 0.0021;
 
 function getGrowth(percent: number): number {
   return percent / 100 + 1;
