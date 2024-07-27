@@ -93,48 +93,52 @@ let calculations = computed(() => {
 
 <template>
   <main>
-    <form action="">
-      <label> Enter salary: <input v-model="salary" type="number" /> </label>
-      <br />
-      <label> For Years: <input v-model="years" type="number" /> </label>
-      <br />
-      <label>
-        Salary Increase in %:
-        <input v-model="salaryGrowthPercent" type="number" />
-      </label>
-      <br />
-      <label>
-        Invests Increase in %:
-        <input v-model="investGrowthPercent" type="number" />
-      </label>
-      <br />
-      <label>
-        Percent of invest from salary %:
-        <input v-model="investPercent" type="number" />
-      </label>
-      <br />
-      <label> Start year: <input v-model="startYear" type="number" /> </label>
-      <br />
-      <label>
-        $
-        <input
-          type="radio"
-          value="$"
-          v-model="currency"
-          @input="changeCurrency"
-      /></label>
-      <label>
-        ₸
-        <input
-          type="radio"
-          value="₸"
-          v-model="currency"
-          @input="changeCurrency"
-      /></label>
-    </form>
+    <div class="form">
+      <div class="">
+        <label> Enter salary: <input v-model="salary" type="number" /> </label>
+        <br />
+        <label> For Years: <input v-model="years" type="number" /> </label>
+        <br />
+        <label>
+          Salary Increase in %:
+          <input v-model="salaryGrowthPercent" type="number" />
+        </label>
+        <br />
+        <label>
+          Invests Increase in %:
+          <input v-model="investGrowthPercent" type="number" />
+        </label>
+        <br />
+        <label>
+          Percent of invest from salary %:
+          <input v-model="investPercent" type="number" />
+        </label>
+        <br />
+        <label> Start year: <input v-model="startYear" type="number" /> </label>
+        <br />
+        <label>
+          Currency $
+          <input
+            type="radio"
+            value="$"
+            v-model="currency"
+            @input="changeCurrency"
+          />
+          ₸
+          <input
+            type="radio"
+            value="₸"
+            v-model="currency"
+            @input="changeCurrency"
+          />
+        </label>
+      </div>
 
-    <h1>Monthly Salary - {{ formatPrice(Math.floor(salary)) }}</h1>
-    <h2>Yearly Salary - {{ formatPrice(Math.floor(salary * 12)) }}</h2>
+      <div class="">
+        <h1>Monthly Salary - {{ formatPrice(Math.floor(salary)) }}</h1>
+        <h2>Yearly Salary - {{ formatPrice(Math.floor(salary * 12)) }}</h2>
+      </div>
+    </div>
 
     <br />
     <br />
@@ -174,15 +178,22 @@ main {
   width: 100%;
 }
 
+.form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+}
 .calculations {
   display: flex;
 }
-.calculations div {
+.calculations div,
+.form div {
   margin-right: 20px;
 }
 
 @media (max-width: 768px) {
-  .calculations {
+  .calculations,
+  .form {
     flex-direction: column;
   }
 }
