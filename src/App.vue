@@ -31,10 +31,10 @@ function changeCurrency(e: any) {
 
 let calculations = computed(() => {
   let salaryGrowth = [];
-  let constantInvests = [];
+  // let constantInvests = [];
   let invests = [];
   let currentSalary = salary.value;
-  let constInvestedSum = 0;
+  // let constInvestedSum = 0;
 
   let investedSum = 0;
 
@@ -44,46 +44,46 @@ let calculations = computed(() => {
     let investGrowth = getGrowth(investPercent.value);
 
     let risedSalary = Math.floor(currentSalary * growth);
-    const constInvestSum = salary.value * 0.1 * 12;
+    // const constInvestSum = salary.value * 0.1 * 12;
     let investSum = Math.floor(currentSalary * 0.1 * 12);
 
-    let risedConstInvest = Math.floor(
-      (constInvestedSum + constInvestSum) * investGrowth
-    );
+    // let risedConstInvest = Math.floor(
+    //   (constInvestedSum + constInvestSum) * investGrowth
+    // );
 
     let risedInvest = Math.floor((investedSum + investSum) * investGrowth);
 
     salaryGrowth.push(
       `${i + 1}. ${year}: 
       ${formatPrice(Math.floor(currentSalary))} 
-      × ${growth} 
+      × ${Math.floor(growth)} 
       = ${formatPrice(risedSalary)} ${currency.value} 
       (${formatPrice(round(risedSalary))} ${currency.value})`
     );
     invests.push(
       `${i + 1}. ${year}: 
       (${formatPrice(investedSum)} + ${formatPrice(investSum)}) 
-      × ${investGrowth} = 
+      × ${Math.floor(investGrowth)} = 
       ${formatPrice(risedInvest)} ${currency.value} 
       (${formatPrice(round(risedInvest))} ${currency.value})`
     );
-    constantInvests.push(
-      `${i + 1}. ${year}: 
-      (${formatPrice(constInvestedSum)} + ${formatPrice(Math.floor(constInvestSum))}) 
-      × ${investGrowth} = 
-      ${formatPrice(risedConstInvest)} ${currency.value} 
-      (${formatPrice(round(risedConstInvest))} ${currency.value})`
-    );
+    // constantInvests.push(
+    //   `${i + 1}. ${year}:
+    //   (${formatPrice(constInvestedSum)} + ${formatPrice(Math.floor(constInvestSum))})
+    //   × ${investGrowth} =
+    //   ${formatPrice(risedConstInvest)} ${currency.value}
+    //   (${formatPrice(round(risedConstInvest))} ${currency.value})`
+    // );
 
     currentSalary = Math.floor(currentSalary * growth);
-    constInvestedSum = risedConstInvest;
+    // constInvestedSum = risedConstInvest;
     investedSum = risedInvest;
   }
 
   return {
     salaryGrowth,
     invests,
-    constantInvests,
+    // constantInvests,
   };
 });
 </script>
@@ -129,32 +129,33 @@ let calculations = computed(() => {
     <br />
     <br />
 
-    <div class="">
-      Salary growth by {{ percent }}% each year
-      <p v-for="(i, idx) in calculations.salaryGrowth" :key="idx">
-        {{ i }}
-      </p>
+    <div class="calculations">
+      <div class="">
+        Salary growth by {{ percent }}% each year
+        <p v-for="(i, idx) in calculations.salaryGrowth" :key="idx">
+          {{ i }}
+        </p>
+      </div>
+
+      <br />
+      <br />
+      <div class="">
+        Invests with 10% of salary by each year
+        <p v-for="(i, idx) in calculations.invests" :key="idx">
+          {{ i }}
+        </p>
+      </div>
     </div>
 
     <br />
     <br />
 
-    <div class="">
-      Invests with 10% of salary by each year
-      <p v-for="(i, idx) in calculations.invests" :key="idx">
-        {{ i }}
-      </p>
-    </div>
-
-    <br />
-    <br />
-
-    <div class="">
+    <!-- <div class="">
       Invests with constant 10% of salary by each year
       <p v-for="(i, idx) in calculations.constantInvests" :key="idx">
         {{ i }}
       </p>
-    </div>
+    </div> -->
   </main>
 </template>
 
@@ -165,5 +166,14 @@ main {
 
 .calculations {
   display: flex;
+}
+.calculations div {
+  margin-right: 20px;
+}
+
+@media (max-width: 768px) {
+  .calculations {
+    flex-direction: column;
+  }
 }
 </style>
