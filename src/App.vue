@@ -66,14 +66,14 @@ let calculations = computed(() => {
     salaryGrowth.push(
       `${i + 1}. ${year}: 
       ${formatPrice(Math.floor(currentSalary))} 
-      × ${Math.floor(growth)} 
+      × ${growth} 
       = ${formatPrice(risedSalary)} ${currency.value} 
       (${formatPrice(round(risedSalary))} ${currency.value})`
     );
     invests.push(
       `${i + 1}. ${year}: 
       (${formatPrice(investedSum)} + ${formatPrice(investSum)}) 
-      × ${Math.floor(investGrowth)} = 
+      × ${investGrowth} = 
       ${formatPrice(risedInvest)} ${currency.value} 
       (${formatPrice(round(risedInvest))} ${currency.value})`
     );
