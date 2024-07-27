@@ -2,13 +2,21 @@
 import { ref, computed } from 'vue';
 import { formatPrice } from './utils/price';
 let salary = ref(1000000);
-let years = ref(10);
-let salaryGrowthPercent = ref(20);
+let years = ref(15);
+let salaryGrowthPercent = ref(25);
 let investGrowthPercent = ref(25);
 let investPercent = ref(10);
 let startYear = ref(2024);
 let currency = ref('₸');
 
+function convertCurrency(val: number, currency: string = '$'): number {
+  if (currency === '$') {
+    val = val / 0.0021;
+  } else {
+    val = val * 0.0021;
+  }
+  return Math.floor(val);
+}
 function getGrowth(percent: number): number {
   return percent / 100 + 1;
 }
@@ -21,14 +29,13 @@ function round(val: number) {
   return Math.round(val / round) * round;
 }
 
-function changeCurrency(e: any) {
-  console.log('changeCurrency', e);
-  if (currency.value === '$') {
-    salary.value = salary.value / 0.0021;
-  } else {
-    salary.value = salary.value * 0.0021;
-  }
+function changeCurrency() {
+  salary.value = convertCurrency(salary.value, currency.value);
 }
+
+let reverseCurrency = computed(() => {
+  return currency.value === '$' ? '₸' : '$';
+});
 
 let calculations = computed(() => {
   let salaryGrowth = [];
@@ -110,7 +117,7 @@ let calculations = computed(() => {
         </label>
         <br />
         <label>
-          Percent of invest from salary %:
+          Percent of invests from salary %:
           <input v-model="investPercent" type="number" />
         </label>
         <br />
@@ -135,8 +142,16 @@ let calculations = computed(() => {
       </div>
 
       <div class="">
-        <h1>Monthly Salary - {{ formatPrice(Math.floor(salary)) }}</h1>
-        <h2>Yearly Salary - {{ formatPrice(Math.floor(salary * 12)) }}</h2>
+        <h1>
+          Monthly Salary - {{ formatPrice(Math.floor(salary)) }}
+          {{ currency }} - {{ formatPrice(convertCurrency(salary, currency)) }}
+          {{ reverseCurrency }}
+        </h1>
+        <h2>
+          Yearly Salary - {{ formatPrice(Math.floor(salary * 12)) }}
+          {{ currency }} - {{ formatPrice(convertCurrency(salary, currency)) }}
+          {{ reverseCurrency }}
+        </h2>
       </div>
     </div>
 
