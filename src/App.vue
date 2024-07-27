@@ -7,6 +7,7 @@ let percent = ref(50);
 let investPercent = ref(25);
 let startYear = ref(2024);
 let currency = ref('₸');
+let tgToDollar = 0.0021;
 
 function getGrowth(percent: number): number {
   return percent / 100 + 1;
@@ -20,11 +21,19 @@ function round(val: number) {
   return Math.round(val / round) * round;
 }
 
+function changeCurrency(e: any) {
+  console.log('changeCurrency', e);
+  if (currency.value === '$') {
+    salary.value = salary.value / 0.0021;
+  } else {
+    salary.value = salary.value * 0.0021;
+  }
+}
+
 let calculations = computed(() => {
   let salaryGrowth = [];
   let constantInvests = [];
   let invests = [];
-
   let currentSalary = salary.value;
   let constInvestedSum = 0;
 
@@ -46,22 +55,22 @@ let calculations = computed(() => {
     let risedInvest = Math.floor((investedSum + investSum) * investGrowth);
 
     salaryGrowth.push(
-      `${year}: 
-      ${formatPrice(currentSalary)} 
+      `${i + 1}. ${year}: 
+      ${formatPrice(Math.floor(currentSalary))} 
       × ${growth} 
       = ${formatPrice(risedSalary)} ${currency.value} 
       (${formatPrice(round(risedSalary))} ${currency.value})`
     );
     invests.push(
-      `${year}: 
+      `${i + 1}. ${year}: 
       (${formatPrice(investedSum)} + ${formatPrice(investSum)}) 
       × ${investGrowth} = 
       ${formatPrice(risedInvest)} ${currency.value} 
       (${formatPrice(round(risedInvest))} ${currency.value})`
     );
     constantInvests.push(
-      `${year}: 
-      (${formatPrice(constInvestedSum)} + ${formatPrice(constInvestSum)}) 
+      `${i + 1}. ${year}: 
+      (${formatPrice(constInvestedSum)} + ${formatPrice(Math.floor(constInvestSum))}) 
       × ${investGrowth} = 
       ${formatPrice(risedConstInvest)} ${currency.value} 
       (${formatPrice(round(risedConstInvest))} ${currency.value})`
@@ -97,12 +106,26 @@ let calculations = computed(() => {
       <br />
       <label> Start year: <input v-model="startYear" type="number" /> </label>
       <br />
-      <label> $ <input type="radio" value="$" v-model="currency" /></label>
-      <label> ₸ <input type="radio" value="₸" v-model="currency" /></label>
+      <label>
+        $
+        <input
+          type="radio"
+          value="$"
+          v-model="currency"
+          @input="changeCurrency"
+      /></label>
+      <label>
+        ₸
+        <input
+          type="radio"
+          value="₸"
+          v-model="currency"
+          @input="changeCurrency"
+      /></label>
     </form>
 
-    <h1>Monthly Salary - {{ formatPrice(salary) }}</h1>
-    <h2>Yearly Salary - {{ formatPrice(salary * 12) }}</h2>
+    <h1>Monthly Salary - {{ formatPrice(Math.floor(salary)) }}</h1>
+    <h2>Yearly Salary - {{ formatPrice(Math.floor(salary * 12)) }}</h2>
 
     <br />
     <br />
