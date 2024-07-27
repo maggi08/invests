@@ -3,8 +3,9 @@ import { ref, computed } from 'vue';
 import { formatPrice } from './utils/price';
 let salary = ref(1000000);
 let years = ref(10);
-let percent = ref(20);
-let investPercent = ref(25);
+let salaryGrowthPercent = ref(20);
+let investGrowthPercent = ref(25);
+let investPercent = ref(10);
 let startYear = ref(2024);
 let currency = ref('₸');
 
@@ -40,12 +41,14 @@ let calculations = computed(() => {
 
   for (let i = 0; i < years.value; i++) {
     let year = startYear.value + i;
-    let growth = getGrowth(percent.value);
-    let investGrowth = getGrowth(investPercent.value);
+    let growth = getGrowth(salaryGrowthPercent.value);
+    let investGrowth = getGrowth(investGrowthPercent.value);
 
     let risedSalary = Math.floor(currentSalary * growth);
     // const constInvestSum = salary.value * 0.1 * 12;
-    let investSum = Math.floor(currentSalary * 0.1 * 12);
+    let investSum = Math.floor(
+      ((currentSalary * investPercent.value) / 100) * 12
+    );
 
     // let risedConstInvest = Math.floor(
     //   (constInvestedSum + constInvestSum) * investGrowth
@@ -96,11 +99,18 @@ let calculations = computed(() => {
       <label> For Years: <input v-model="years" type="number" /> </label>
       <br />
       <label>
-        Salary Increase in %: <input v-model="percent" type="number" />
+        Salary Increase in %:
+        <input v-model="salaryGrowthPercent" type="number" />
       </label>
       <br />
       <label>
-        Invests Increase in %: <input v-model="investPercent" type="number" />
+        Invests Increase in %:
+        <input v-model="investGrowthPercent" type="number" />
+      </label>
+      <br />
+      <label>
+        Percent of invest from salary %:
+        <input v-model="investPercent" type="number" />
       </label>
       <br />
       <label> Start year: <input v-model="startYear" type="number" /> </label>
@@ -131,7 +141,7 @@ let calculations = computed(() => {
 
     <div class="calculations">
       <div class="">
-        Salary growth by {{ percent }}% each year
+        Salary growth by {{ salaryGrowthPercent }}% each year
         <p v-for="(i, idx) in calculations.salaryGrowth" :key="idx">
           {{ i }}
         </p>
