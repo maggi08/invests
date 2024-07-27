@@ -3,7 +3,8 @@ import { ref, computed } from 'vue';
 import { formatPrice } from './utils/price';
 let salary = ref(1000000);
 let years = ref(10);
-let percent = ref(20);
+let percent = ref(50);
+let investPercent = ref(25);
 let startYear = ref(2024);
 let currency = ref('₸');
 
@@ -32,16 +33,17 @@ let calculations = computed(() => {
   for (let i = 0; i < years.value; i++) {
     let year = startYear.value + i;
     let growth = getGrowth(percent.value);
+    let investGrowth = getGrowth(investPercent.value);
 
     let risedSalary = Math.floor(currentSalary * growth);
     const constInvestSum = salary.value * 0.1 * 12;
     let investSum = Math.floor(currentSalary * 0.1 * 12);
 
     let risedConstInvest = Math.floor(
-      (constInvestedSum + constInvestSum) * growth
+      (constInvestedSum + constInvestSum) * investGrowth
     );
 
-    let risedInvest = Math.floor((investedSum + investSum) * growth);
+    let risedInvest = Math.floor((investedSum + investSum) * investGrowth);
 
     salaryGrowth.push(
       `${year}: 
@@ -53,14 +55,14 @@ let calculations = computed(() => {
     invests.push(
       `${year}: 
       (${formatPrice(investedSum)} + ${formatPrice(investSum)}) 
-      × ${growth} = 
+      × ${investGrowth} = 
       ${formatPrice(risedInvest)} ${currency.value} 
       (${formatPrice(round(risedInvest))} ${currency.value})`
     );
     constantInvests.push(
       `${year}: 
       (${formatPrice(constInvestedSum)} + ${formatPrice(constInvestSum)}) 
-      × ${growth} = 
+      × ${investGrowth} = 
       ${formatPrice(risedConstInvest)} ${currency.value} 
       (${formatPrice(round(risedConstInvest))} ${currency.value})`
     );
@@ -81,13 +83,19 @@ let calculations = computed(() => {
 <template>
   <main>
     <form action="">
-      <label> Enter salary: <input v-model="salary" /> </label>
+      <label> Enter salary: <input v-model="salary" type="number" /> </label>
       <br />
-      <label> For Years: <input v-model="years" /> </label>
+      <label> For Years: <input v-model="years" type="number" /> </label>
       <br />
-      <label> Salary Increase in %: <input v-model="percent" /> </label>
+      <label>
+        Salary Increase in %: <input v-model="percent" type="number" />
+      </label>
       <br />
-      <label> Start year: <input v-model="startYear" /> </label>
+      <label>
+        Invests Increase in %: <input v-model="investPercent" type="number" />
+      </label>
+      <br />
+      <label> Start year: <input v-model="startYear" type="number" /> </label>
       <br />
       <label> $ <input type="radio" value="$" v-model="currency" /></label>
       <label> ₸ <input type="radio" value="₸" v-model="currency" /></label>
