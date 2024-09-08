@@ -5,11 +5,11 @@ import { DEFAULT_KZT_USD, fetchKZTtoUSD } from './utils/fetch-kzt';
 
 let salary = ref(1000000);
 let years = ref(15);
-let salaryGrowthPercent = ref(25);
+let salaryGrowthPercent = ref(50);
 let investGrowthPercent = ref(25);
 let investPercent = ref(10);
 let startYear = ref(2024);
-let currency = ref('₸');
+let currency = ref('$');
 let kztToDollar = DEFAULT_KZT_USD;
 
 fetchKZTtoUSD().then(res => (kztToDollar = res));
