@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { formatPrice } from './utils/price';
 import { DEFAULT_KZT_USD, fetchKZTtoUSD } from './utils/fetch-kzt';
 
@@ -9,7 +9,7 @@ let salaryGrowthPercent = ref(50);
 let investGrowthPercent = ref(25);
 let investPercent = ref(10);
 let startYear = ref(2024);
-let currency = ref('$');
+let currency = ref('₸');
 let kztToDollar = DEFAULT_KZT_USD;
 
 fetchKZTtoUSD().then(res => (kztToDollar = res));
@@ -100,6 +100,10 @@ let calculations = computed(() => {
     invests,
     // constantInvests,
   };
+});
+
+onMounted(() => {
+  changeCurrency();
 });
 </script>
 
