@@ -4,7 +4,7 @@ import { formatPrice } from './utils/price';
 import { DEFAULT_KZT_USD, fetchKZTtoUSD } from './utils/fetch-kzt';
 
 let salary = ref(1000000);
-let years = ref(15);
+let years = ref(12);
 let salaryGrowthPercent = ref(50);
 let investGrowthPercent = ref(25);
 let investPercent = ref(10);
@@ -102,9 +102,9 @@ let calculations = computed(() => {
   };
 });
 
-onMounted(() => {
-  changeCurrency();
-});
+// onMounted(() => {
+//   changeCurrency();
+// });
 </script>
 
 <template>
