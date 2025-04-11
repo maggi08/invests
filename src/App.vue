@@ -44,10 +44,8 @@ let reverseCurrency = computed(() => {
 
 let calculations = computed(() => {
   let salaryGrowth = [];
-  // let constantInvests = [];
   let invests = [];
   let currentSalary = salary.value;
-  // let constInvestedSum = 0;
 
   let investedSum = 0;
 
@@ -57,14 +55,9 @@ let calculations = computed(() => {
     let investGrowth = getGrowth(investGrowthPercent.value);
 
     let risedSalary = Math.floor(currentSalary * growth);
-    // const constInvestSum = salary.value * 0.1 * 12;
     let investSum = Math.floor(
       ((currentSalary * investPercent.value) / 100) * 12
     );
-
-    // let risedConstInvest = Math.floor(
-    //   (constInvestedSum + constInvestSum) * investGrowth
-    // );
 
     let risedInvest = Math.floor((investedSum + investSum) * investGrowth);
 
@@ -82,29 +75,16 @@ let calculations = computed(() => {
       ${formatPrice(risedInvest)} ${currency.value}
       (${formatPrice(round(risedInvest))} ${currency.value})`
     );
-    // constantInvests.push(
-    //   `${i + 1}. ${year}:
-    //   (${formatPrice(constInvestedSum)} + ${formatPrice(Math.floor(constInvestSum))})
-    //   × ${investGrowth} =
-    //   ${formatPrice(risedConstInvest)} ${currency.value}
-    //   (${formatPrice(round(risedConstInvest))} ${currency.value})`
-    // );
 
     currentSalary = Math.floor(currentSalary * growth);
-    // constInvestedSum = risedConstInvest;
     investedSum = risedInvest;
   }
 
   return {
     salaryGrowth,
     invests,
-    // constantInvests,
   };
 });
-
-// onMounted(() => {
-//   changeCurrency();
-// });
 </script>
 
 <template>
