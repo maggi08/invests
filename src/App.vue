@@ -1,37 +1,19 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { formatPrice } from './utils/price';
-import { DEFAULT_KZT_USD, fetchKZTtoUSD } from './utils/fetch-kzt';
+import { formatPrice, round } from './utils/price';
+import { useKZTtoUSD } from './utils/useKZTtoUSD';
 
+const { convertCurrency, Currency } = useKZTtoUSD();
 let salary = ref(1000000);
 let years = ref(12);
 let salaryGrowthPercent = ref(50);
 let investGrowthPercent = ref(25);
 let investPercent = ref(10);
 let startYear = ref(2024);
-let currency = ref('₸');
-let kztToDollar = DEFAULT_KZT_USD;
+let currency = ref(Currency.kzt);
 
-fetchKZTtoUSD().then(res => (kztToDollar = res));
-
-function convertCurrency(val: number, currency: string = '$'): number {
-  if (currency === '$') {
-    val = val / kztToDollar;
-  } else {
-    val = val * kztToDollar;
-  }
-  return Math.floor(val);
-}
 function getGrowth(percent: number): number {
   return percent / 100 + 1;
-}
-
-function round(val: number) {
-  if (val < 10000) return val;
-  let len = `${val}`.length - 2;
-  let zeros = `0`.repeat(len);
-  let round = Number(`1${zeros}`);
-  return Math.round(val / round) * round;
 }
 
 function changeCurrency() {
@@ -164,16 +146,6 @@ let calculations = computed(() => {
         </p>
       </div>
     </div>
-
-    <br />
-    <br />
-
-    <!-- <div class="">
-      Invests with constant 10% of salary by each year
-      <p v-for="(i, idx) in calculations.constantInvests" :key="idx">
-        {{ i }}
-      </p>
-    </div> -->
   </main>
 </template>
 
