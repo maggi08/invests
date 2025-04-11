@@ -2,7 +2,7 @@ import { onMounted, ref } from 'vue';
 
 const DEFAULT_KZT_USD = 0.002;
 
-enum Currency {
+enum CURRENCY {
   usd = '$',
   kzt = '₸',
 }
@@ -24,9 +24,10 @@ export function useKZTtoUSD() {
 
   const convertCurrency = (
     val: number,
-    currency: Currency = Currency.usd
+    currency: CURRENCY = CURRENCY.usd
   ): number => {
-    if (currency === Currency.usd) {
+    console.log('convertCurrency', val, currency, kztToUSD.value);
+    if (currency === CURRENCY.kzt) {
       val = val / kztToUSD.value;
     } else {
       val = val * kztToUSD.value;
@@ -38,5 +39,5 @@ export function useKZTtoUSD() {
     fetchKZTtoUSD().then(res => (kztToUSD.value = res));
   });
 
-  return { kztToUSD, convertCurrency, Currency };
+  return { kztToUSD, convertCurrency, CURRENCY };
 }

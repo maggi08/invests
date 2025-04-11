@@ -2,15 +2,16 @@
 import { ref, computed, onMounted } from 'vue';
 import { formatPrice, round } from './utils/price';
 import { useKZTtoUSD } from './utils/useKZTtoUSD';
+import BaseInput from './components/BaseInput.vue';
 
-const { convertCurrency, Currency } = useKZTtoUSD();
+const { convertCurrency, CURRENCY } = useKZTtoUSD();
 let salary = ref(1000000);
-let years = ref(12);
+let years = ref(15);
 let salaryGrowthPercent = ref(50);
 let investGrowthPercent = ref(25);
 let investPercent = ref(10);
-let startYear = ref(2024);
-let currency = ref(Currency.kzt);
+let startYear = ref(2025);
+let currency = ref(CURRENCY.kzt);
 
 function getGrowth(percent: number): number {
   return percent / 100 + 1;
@@ -21,7 +22,7 @@ function changeCurrency() {
 }
 
 let reverseCurrency = computed(() => {
-  return currency.value === '$' ? '₸' : '$';
+  return currency.value === CURRENCY.usd ? CURRENCY.kzt : CURRENCY.usd;
 });
 
 let calculations = computed(() => {
@@ -73,54 +74,47 @@ let calculations = computed(() => {
   <main>
     <div class="form">
       <div class="">
-        <label> Enter salary: <input v-model="salary" type="number" /> </label>
-        <br />
-        <label> For Years: <input v-model="years" type="number" /> </label>
-        <br />
-        <label>
-          Salary Increase in %:
-          <input v-model="salaryGrowthPercent" type="number" />
-        </label>
-        <br />
-        <label>
-          Invests Increase in %:
-          <input v-model="investGrowthPercent" type="number" />
-        </label>
-        <br />
-        <label>
-          Percent of invests from salary %:
-          <input v-model="investPercent" type="number" />
-        </label>
-        <br />
-        <label> Start year: <input v-model="startYear" type="number" /> </label>
-        <br />
-        <label>
-          Currency $
-          <input
-            type="radio"
-            value="$"
-            v-model="currency"
-            @input="changeCurrency"
-          />
-          ₸
-          <input
-            type="radio"
-            value="₸"
-            v-model="currency"
-            @input="changeCurrency"
-          />
-        </label>
+        <BaseInput label="Enter salary" v-model="salary" type="number" />
+        <BaseInput label="For Years" v-model="years" type="number" />
+        <BaseInput
+          label="Salary Increase in %"
+          v-model="salaryGrowthPercent"
+          type="number"
+        />
+        <BaseInput
+          label="Invests Increase in %"
+          v-model="investGrowthPercent"
+          type="number"
+        />
+        <BaseInput
+          label="Percent of invests from salary %"
+          v-model="investPercent"
+          type="number"
+        />
+        <BaseInput label="Start year" v-model="startYear" type="number" />
+        <BaseInput
+          label="Currency"
+          v-model="currency"
+          type="radio"
+          :options="[
+            { label: CURRENCY.usd, value: CURRENCY.usd },
+            { label: CURRENCY.kzt, value: CURRENCY.kzt },
+          ]"
+          @input="changeCurrency"
+        />
       </div>
 
       <div class="">
         <h1>
           Monthly Salary - {{ formatPrice(Math.floor(salary)) }}
-          {{ currency }} - {{ formatPrice(convertCurrency(salary, currency)) }}
+          {{ currency }} -
+          {{ formatPrice(convertCurrency(salary, reverseCurrency)) }}
           {{ reverseCurrency }}
         </h1>
         <h2>
           Yearly Salary - {{ formatPrice(Math.floor(salary * 12)) }}
-          {{ currency }} - {{ formatPrice(convertCurrency(salary, currency)) }}
+          {{ currency }} -
+          {{ formatPrice(convertCurrency(salary, reverseCurrency)) }}
           {{ reverseCurrency }}
         </h2>
       </div>
