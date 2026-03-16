@@ -4,20 +4,8 @@ import SalaryCalculator from './components/SalaryCalculator.vue'
 </script>
 
 <template>
-  <main>
+  <main class="w-full max-w-[900px] mx-auto px-4 py-8 flex flex-col gap-8">
     <MiniPortfolioCalc />
     <SalaryCalculator />
   </main>
 </template>
-
-<style scoped>
-main {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-</style>
